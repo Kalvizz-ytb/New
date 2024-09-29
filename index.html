@@ -1,20 +1,434 @@
-<!Doctype Html lang=fr>
-
+<!DOCTYPE html>
+<html lang="fr">
 <head>
-  <title>Ma page web</title>
-  <meta charset=UTF-8>
-  <meta keyworlds=kalvizz>
-  
-  
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NomDuYoutubeur - Monteur Vidéo Professionnel</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    <style>
+        :root {
+            --primary-color: #ff0000;
+            --secondary-color: #282828;
+            --text-color: #333;
+            --bg-color: #f9f9f9;
+            --card-bg: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background-color: var(--secondary-color);
+            color: #fff;
+            padding: 20px 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        nav ul {
+            display: flex;
+            justify-content: center;
+            list-style-type: none;
+        }
+
+        nav ul li {
+            margin: 0 15px;
+        }
+
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            color: var(--primary-color);
+        }
+
+        main {
+            margin-top: 80px;
+        }
+
+        section {
+            padding: 60px 0;
+        }
+
+        h1, h2 {
+            color: var(--secondary-color);
+            margin-bottom: 20px;
+        }
+
+        .hero {
+            background-image: url('/api/placeholder/1200/400');
+            background-size: cover;
+            background-position: center;
+            color: #fff;
+            text-align: center;
+            padding: 150px 0;
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-size: 3.5em;
+            margin-bottom: 20px;
+            color: #fff;
+        }
+
+        .hero p {
+            font-size: 1.2em;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 20px;
+            transition: background-color 0.3s ease;
+        }
+
+        .cta-button:hover {
+            background-color: #cc0000;
+        }
+
+        .skills {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .skill {
+            background-color: var(--secondary-color);
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 1em;
+        }
+
+        .projects {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .project {
+            background-color: var(--card-bg);
+            border-radius: 5px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .project:hover {
+            transform: translateY(-5px);
+        }
+
+        .project img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .project-info {
+            padding: 20px;
+        }
+
+        .project h3 {
+            margin-bottom: 10px;
+        }
+
+        .contact-form {
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .contact-form input,
+        .contact-form textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .contact-form button {
+            background-color: var(--primary-color);
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .contact-form button:hover {
+            background-color: #cc0000;
+        }
+
+        footer {
+            background-color: var(--secondary-color);
+            color: #fff;
+            text-align: center;
+            padding: 20px 0;
+            margin-top: 40px;
+        }
+
+        .social-links {
+            margin-top: 20px;
+        }
+
+        .social-links a {
+            color: #fff;
+            font-size: 1.5em;
+            margin: 0 10px;
+            transition: color 0.3s ease;
+        }
+
+        .social-links a:hover {
+            color: var(--primary-color);
+        }
+
+        #demo-editor {
+            background-color: var(--card-bg);
+            border-radius: 5px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-top: 40px;
+        }
+
+        @media (max-width: 768px) {
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            nav ul li {
+                margin: 10px 0;
+            }
+
+            .hero h1 {
+                font-size: 2.5em;
+            }
+
+            .projects {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
-<body><h1>Hello world</h1>
-<p>Lorem ipsum odor amet, consectetuer adipiscing elit. Sem tempor lobortis habitant justo; vivamus fermentum semper. Lorem nullam consectetur amet vulputate; dis porttitor ligula. Nunc vestibulum leo tellus non viverra. Ultrices felis vestibulum cras nulla; massa urna eget nibh praesent. Nascetur nam tristique est dapibus potenti sagittis augue nisi. Nunc volutpat velit montes, placerat turpis a efficitur. Quis erat himenaeos turpis pretium donec lorem metus, pharetra eros. Est fermentum aenean risus neque sapien erat class suscipit! Odio orci rhoncus tempor sollicitudin laoreet ex.
+<body>
+    <header>
+        <nav class="container">
+            <ul>
+                <li><a href="#about">À propos</a></li>
+                <li><a href="#projects">Projets</a></li>
+                <li><a href="#demo">Démo</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
 
-Venenatis ornare venenatis quam metus tempor euismod primis? Maecenas malesuada aenean at primis senectus eros. Netus curae ornare at amet erat id ridiculus nibh elit. Sapien consectetur sodales rutrum ultricies mollis primis odio. Neque platea primis laoreet aliquam, in maecenas. Vivamus convallis class egestas; imperdiet nisl convallis. Consequat ad orci; aptent integer etiam elementum. Netus iaculis convallis nulla porta habitant parturient fringilla ultricies. Primis non ut consequat ex mauris.
+    <main>
+        <section class="hero">
+            <div class="hero-content">
+                <h1>NomDuYoutubeur</h1>
+                <p>Monteur Vidéo Professionnel | Créateur de Contenu YouTube</p>
+                <a href="#contact" class="cta-button">Travaillons ensemble</a>
+            </div>
+        </section>
 
-Semper iaculis primis eleifend volutpat per duis turpis facilisis. Et condimentum montes himenaeos vulputate massa vivamus porttitor. Tellus senectus quisque ipsum pretium, consectetur non etiam scelerisque. Ornare commodo phasellus natoque cras vel laoreet, tellus est lectus. Euismod maecenas nam faucibus justo leo ante condimentum scelerisque. Ligula blandit auctor a; commodo himenaeos congue. Cubilia dolor maximus; mattis elementum ornare urna.
+        <section id="about" class="container">
+            <h2>À Propos</h2>
+            <p>Passionné par le montage vidéo et la création de contenu, je transforme des séquences brutes en histoires captivantes. Avec X années d'expérience dans l'industrie, j'ai développé un œil aiguisé pour le rythme, la narration visuelle et les effets spéciaux qui font sensation sur YouTube.</p>
+            <div class="skills">
+                <span class="skill">Montage Vidéo</span>
+                <span class="skill">Motion Graphics</span>
+                <span class="skill">Color Grading</span>
+                <span class="skill">Sound Design</span>
+                <span class="skill">Storytelling</span>
+            </div>
+        </section>
 
-Nisi leo nisi congue aliquam tristique rhoncus. Tortor augue felis; blandit gravida nisi suspendisse purus. Eget odio eu ultricies dolor lacus maximus. Nulla aliquam faucibus purus id ad proin, torquent sapien. Aenean vestibulum felis laoreet integer quis eget felis pellentesque. Pharetra nisl aliquet integer odio nibh vestibulum est. Augue aliquam duis sagittis tincidunt vehicula facilisis rutrum.
+        <section id="projects" class="container">
+            <h2>Projets Récents</h2>
+            <div class="projects">
+                <div class="project">
+                    <img src="/api/placeholder/400/200" alt="Projet 1">
+                    <div class="project-info">
+                        <h3>Titre de la Vidéo 1</h3>
+                        <p>Description brève du projet et des techniques de montage utilisées.</p>
+                    </div>
+                </div>
+                <div class="project">
+                    <img src="/api/placeholder/400/200" alt="Projet 2">
+                    <div class="project-info">
+                        <h3>Titre de la Vidéo 2</h3>
+                        <p>Description brève du projet et des techniques de montage utilisées.</p>
+                    </div>
+                </div>
+                <div class="project">
+                    <img src="/api/placeholder/400/200" alt="Projet 3">
+                    <div class="project-info">
+                        <h3>Titre de la Vidéo 3</h3>
+                        <p>Description brève du projet et des techniques de montage utilisées.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-Inceptos commodo blandit senectus quam torquent praesent arcu porta lacus. Enim congue hendrerit convallis aliquet neque rhoncus habitant. Placerat parturient phasellus dignissim et phasellus facilisis ullamcorper. Donec inceptos magnis in mus urna sodales tellus potenti. Varius natoque elementum mollis ut consectetur facilisi! Pellentesque nisi maecenas ultrices pulvinar cras curabitur consectetur. Velit ligula dis dictum; tempus praesent parturient. Facilisi nibh conubia himenaeos at ullamcorper.</p></body>
-<footer>tout droit reserve</footer>
+        <section id="demo" class="container">
+            <h2>Démonstration de Montage</h2>
+            <p>Explorez les bases du montage vidéo avec cet outil interactif simplifié.</p>
+            <div id="demo-editor"></div>
+        </section>
+
+        <section id="contact" class="container">
+            <h2>Contactez-moi</h2>
+            <form class="contact-form">
+                <input type="text" placeholder="Nom" required>
+                <input type="email" placeholder="Email" required>
+                <textarea placeholder="Votre message ou proposition de projet" required></textarea>
+                <button type="submit">Envoyer</button>
+            </form>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 NomDuYoutubeur. Tous droits réservés.</p>
+            <div class="social-links">
+                <a href="#"><i class="fab fa-youtube"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-linkedin"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <script type="text/babel">
+        const VideoEditor = () => {
+            const [clips, setClips] = React.useState([
+                { id: 1, name: 'Intro', duration: 5 },
+                { id: 2, name: 'Scène 1', duration: 10 },
+                { id: 3, name: 'Scène 2', duration: 15 },
+            ]);
+
+            const [timeline, setTimeline] = React.useState([]);
+
+            const addToTimeline = (clipId) => {
+                const clip = clips.find(c => c.id === clipId);
+                setTimeline([...timeline, { ...clip, timelineId: Date.now() }]);
+            };
+
+            const removeFromTimeline = (timelineId) => {
+                setTimeline(timeline.filter(clip => clip.timelineId !== timelineId));
+            };
+
+            return (
+                <div style={{ backgroundColor: '#f0f0f0', padding: '20px', borderRadius: '10px' }}>
+                    <div style={{ marginBottom: '20px' }}>
+                        <h3>Clips disponibles</h3>
+                        {clips.map(clip => (
+                            <button 
+                                key={clip.id} 
+                                onClick={() => addToTimeline(clip.id)}
+                                style={{ margin: '5px', padding: '10px', backgroundColor: '#4CAF50', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer' }}
+                            >
+                                {clip.name} ({clip.duration}s)
+                            </button>
+                        ))}
+                    </div>
+                    <div>
+                        <h3>Timeline</h3>
+                        <div style={{ display: 'flex', overflowX: 'auto', backgroundColor: 'white', padding: '10px', borderRadius: '5px' }}>
+                            {timeline.map(clip => (
+                                <div 
+                                    key={clip.timelineId} 
+                                    style={{ 
+                                        width: `${clip.duration * 10}px`, 
+                                        backgroundColor: '#3498db', 
+                                        margin: '0 2px', 
+                                        padding: '5px', 
+                                        color: 'white', 
+                                        borderRadius: '3px',
+                                        position: 'relative'
+                                    }}
+                                >
+                                    {clip.name}
+                                    <button 
+                                        onClick={() => removeFromTimeline(clip.timelineId)}
+                                        style={{ 
+                                            position: 'absolute', 
+                                            top: '-10px', 
+                                            right: '-10px', 
+                                            backgroundColor: 'red', 
+                                            color: 'white', 
+                                            border: 'none', 
+                                            borderRadius: '50%', 
+                                            width: '20px', 
+                                            height: '20px', 
+                                            cursor: 'pointer' 
+                                        }}
+                                    >
+                                        ×
+                                    </button>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        ReactDOM.render(<VideoEditor />, document.getElementById('demo-editor'));
+
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
