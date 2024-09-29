@@ -158,9 +158,9 @@
         <h1>Ma Boutique en Ligne</h1>
     </header>
     <nav>
-        <a href="#home">Accueil</a>
-        <a href="#products">Produits</a>
-        <a href="#order">Commander</a>
+        <a href="#home" onclick="navigate('home')">Accueil</a>
+        <a href="#products" onclick="navigate('products')">Produits</a>
+        <a href="#order" onclick="navigate('order')">Commander</a>
     </nav>
     
     <main id="content">
@@ -213,9 +213,9 @@
         // Liste des produits
         const products = [
             { id: 1, name: "Rose", price: 300, category: "bouquet" },
-            { id: 2, name: "Tulippe", price: 800, category: "bouquet" },
-            { id: 3, name: "Hortansia", price: 20, category: "à-planter" },
-            { id: 4, name: "juliete", price: 50, category: "à-planter" },
+            { id: 2, name: "Tulipe", price: 800, category: "bouquet" },
+            { id: 3, name: "Hortensia", price: 20, category: "à-planter" },
+            { id: 4, name: "Juliette", price: 50, category: "à-planter" },
         ];
 
         // Fonction pour afficher les produits
@@ -307,12 +307,9 @@
         // Fonction pour afficher/masquer le panier
         function toggleCart() {
             const cartElement = document.getElementById('cart');
-            if (cartElement.classList.contains('open')) {
-                cartElement.classList.remove('open');
-            } else {
-                cartElement.classList.add('open');
-            }
+            cartElement.classList.toggle('open');
         }
+
         // Initialisation
         navigate('home');
     </script>
