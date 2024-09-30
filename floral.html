@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ma Boutique en Ligne</title>
+    <title>Les fleurs de Rosa</title>
+      <img src="images/rose.png" alt="Icône de la boutique" style="width: 50px; height: auto;">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
     <style>
         * {
             box-sizing: border-box;
@@ -112,7 +112,6 @@
             border: none;
             padding: 0.5rem 1rem;
             text-align: center;
-            text-decoration: none;
             display: inline-block;
             font-size: 16px;
             margin: 4px 2px;
@@ -139,17 +138,21 @@
             cursor: pointer;
             z-index: 1000;
         }
-        #login-buttons {
-            display: flex;
-            justify-content: center;
-            margin-top: 1rem;
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #4CAF50;
+            color: white;
+            padding: 0.5rem;
+            border-radius: 4px;
+            display: none;
+            z-index: 1001;
         }
-        #login-buttons button {
-            margin: 0 0.5rem;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+        @media (max-width: 600px) {
+            #product-list {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
@@ -167,50 +170,48 @@
         <!-- Le contenu changera en fonction de la page -->
     </main>
     <div id="cart-icon" onclick="toggleCart()">🛒</div>
-    <div id="cart">
-        <h2>Panier</h2>
+    <div id="cart" aria-labelledby="cart-title">
+        <h2 id="cart-title">Panier</h2>
         <ul id="cart-items"></ul>
         <p>Total: <span id="cart-total">0</span>€</p>
         <button onclick="generatePDF()">Télécharger le récapitulatif PDF</button>
     </div>
 
+    <div class="notification" id="notification">Produit ajouté au panier !</div>
+
     <script>
-        // Contenu de la page d'accueil
         const homePage = `
             <h2>Bienvenue dans notre boutique</h2>
             <p>Découvrez nos produits exceptionnels !</p>
         `;
 
-        // Contenu de la page des produits
         const productsPage = `
             <h2>Nos Produits</h2>
             <div id="search-bar">
-                <input type="text" id="search-input" placeholder="Rechercher un produit">
+                <input type="text" id="search-input" placeholder="Rechercher un produit" aria-label="Rechercher un produit">
                 <button onclick="searchProducts()">Rechercher</button>
             </div>
             <div id="categories">
                 <button onclick="filterProducts('all')">Tous</button>
-                <button onclick="filterProducts('à-planter')">à planter</button>
+                <button onclick="filterProducts('à-planter')">À planter</button>
                 <button onclick="filterProducts('bouquet')">Bouquets</button>
             </div>
             <div id="product-list"></div>
         `;
 
-        // Contenu de la page de commande
         const orderPage = `
             <h2>Passer une commande</h2>
-            <form id="order-form">
+            <form id="order-form" onsubmit="return submitOrder(event)">
                 <label for="name">Nom :</label>
-                <input type="text" id="name" required><br><br>
+                <input type="text" id="name" required aria-required="true"><br><br>
                 <label for="email">Email :</label>
-                <input type="email" id="email" required><br><br>
+                <input type="email" id="email" required aria-required="true"><br><br>
                 <label for="address">Adresse :</label>
-                <textarea id="address" required></textarea><br><br>
+                <textarea id="address" required aria-required="true"></textarea><br><br>
                 <button type="submit">Commander</button>
             </form>
         `;
 
-        // Liste des produits
         const products = [
             { id: 1, name: "Rose", price: 300, category: "bouquet" },
             { id: 2, name: "Tulipe", price: 800, category: "bouquet" },
@@ -218,13 +219,12 @@
             { id: 4, name: "Juliette", price: 50, category: "à-planter" },
         ];
 
-        // Fonction pour afficher les produits
         function displayProducts(productsToShow = products) {
             const productList = document.getElementById('product-list');
             productList.innerHTML = '';
             productsToShow.forEach(product => {
                 const productDiv = document.createElement('div');
-                productDiv.className = 'product fade-in';
+                productDiv.className = 'product';
                 productDiv.innerHTML = `
                     <h3>${product.name}</h3>
                     <p>Prix : ${product.price}€</p>
@@ -235,7 +235,6 @@
             });
         }
 
-        // Fonction pour changer le contenu de la page
         function navigate(page) {
             const content = document.getElementById('content');
             content.style.opacity = '0';
@@ -256,11 +255,11 @@
             }, 300);
         }
 
-        // Fonction pour gérer le panier
         let cart = [];
         function addToCart(id, name, price) {
             cart.push({ id, name, price });
             updateCart();
+            showNotification("Produit ajouté au panier !");
         }
 
         function updateCart() {
@@ -271,30 +270,70 @@
             cart.forEach(item => {
                 const listItem = document.createElement('li');
                 listItem.innerText = `${item.name} - ${item.price}€`;
+                const removeButton = document.createElement('button');
+                removeButton.innerText = 'Supprimer';
+                removeButton.onclick = () => removeFromCart(item.id);
+                listItem.appendChild(removeButton);
                 cartItems.appendChild(listItem);
                 total += item.price;
             });
             cartTotal.innerText = total;
         }
 
-        // Fonction pour générer un PDF
-        function generatePDF() {
-            const doc = new jspdf.jsPDF();
-            doc.text("Récapitulatif de votre commande", 10, 10);
-            cart.forEach((item, index) => {
-                doc.text(`${index + 1}. ${item.name} - ${item.price}€`, 10, 20 + (index * 10));
-            });
-            doc.save("commande.pdf");
+        function removeFromCart(id) {
+            cart = cart.filter(item => item.id !== id);
+            updateCart();
         }
 
-        // Fonction pour rechercher des produits
+        function showNotification(message) {
+            const notification = document.getElementById('notification');
+            notification.innerText = message;
+            notification.style.display = 'block';
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 2000);
+        }
+
+        function submitOrder(event) {
+            event.preventDefault();
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const address = document.getElementById('address').value;
+            if (cart.length === 0) {
+                alert("Votre panier est vide !");
+                return;
+            }
+            // Ici, tu pourrais envoyer les données à un serveur
+            alert(`Commande réussie pour ${name} !`);
+            cart = []; // Réinitialiser le panier
+            updateCart();
+            navigate('home');
+        }
+
+        function generatePDF() {
+            const doc = new jsPDF();
+            doc.setFontSize(18);
+            doc.text("Facture", 105, 20, null, null, 'center');
+            doc.setFontSize(12);
+            doc.text("Nom de l'entreprise", 10, 30);
+            doc.text("Adresse de l'entreprise", 10, 35);
+            doc.text("Téléphone : 01 23 45 67 89", 10, 40);
+            doc.text("Email : contact@entreprise.com", 10, 45);
+            const startY = 60;
+            doc.autoTable({
+                startY: startY,
+                head: [['#', 'Produit', 'Prix (€)']],
+                body: cart.map((item, index) => [index + 1, item.name, item.price]),
+            });
+            doc.save("facture.pdf");
+        }
+
         function searchProducts() {
             const searchInput = document.getElementById('search-input').value.toLowerCase();
             const filteredProducts = products.filter(product => product.name.toLowerCase().includes(searchInput));
             displayProducts(filteredProducts);
         }
 
-        // Fonction pour filtrer par catégorie
         function filterProducts(category) {
             if (category === 'all') {
                 displayProducts(products);
@@ -304,13 +343,11 @@
             }
         }
 
-        // Fonction pour afficher/masquer le panier
         function toggleCart() {
             const cartElement = document.getElementById('cart');
             cartElement.classList.toggle('open');
         }
 
-        // Initialisation
         navigate('home');
     </script>
 </body>
