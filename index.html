@@ -249,32 +249,40 @@
         <button onclick="generatePDF()">Télécharger le récapitulatif PDF</button>
     </div>
 
-    <script>
-        // Liste des produits
-        const products = [
-            { id: 1, name: "Tapis Serebula Pro XXL", price: 29.99, category: "XXL", description: "900x400mm, surface lisse" },
-            { id: 2, name: "Tapis Serebula Elite 3XL", price: 39.99, category: "3XL", description: "1200x600mm, bords cousus" },
-            { id: 3, name: "Tapis Serebula Ultimate 4XL", price: 49.99, category: "4XL", description: "1500x800mm, base antidérapante" },
-            { id: 4, name: "Tapis Serebula RGB XXL", price: 59.99, category: "XXL", description: "900x400mm, éclairage RGB" },
-        ];
+   <script>
+    // Liste des produits
+    const products = [
+        { id: 1, name: "Tapis Serebula Pro XXL", price: 29.99, category: "XXL", description: "900x400mm, surface lisse" },
+        { id: 2, name: "Tapis Serebula Elite 3XL", price: 39.99, category: "3XL", description: "1200x600mm, bords cousus" },
+        { id: 3, name: "Tapis Serebula Ultimate 4XL", price: 49.99, category: "4XL", description: "1500x800mm, base antidérapante" },
+        { id: 4, name: "Tapis Serebula RGB XXL", price: 59.99, category: "XXL", description: "900x400mm, éclairage RGB" },
+    ];
 
-        // Fonction pour afficher les produits
-        function displayProducts(productsToShow = products) {
-            const productList = document.getElementById('product-list');
-            productList.innerHTML = '';
-            productsToShow.forEach(product => {
-                const productDiv = document.createElement('div');
-                productDiv.className = 'product';
-                productDiv.innerHTML = `
-                    <h3>${product.name}</h3>
-                    <p>${product.description}</p>
-                    <p>Prix : ${product.price.toFixed(2)}€</p>
-                    <p>Taille : ${product.category}</p>
-                    <button onclick="addToCart(${product.id}, '${product.name}', ${product.price})">Ajouter au panier</button>
-                `;
-                productList.appendChild(productDiv);
-            });
-        }
+    // Fonction pour afficher les produits
+    function displayProducts(productsToShow = products) {
+        const productList = document.getElementById('product-list');
+        productList.innerHTML = '';
+        productsToShow.forEach(product => {
+            const productDiv = document.createElement('div');
+            productDiv.className = 'product';
+            productDiv.innerHTML = `
+                <h3>${product.name}</h3>
+                <p>${product.description}</p>
+                <p>Prix : ${product.price.toFixed(2)}€</p>
+                <p>Taille : ${product.category}</p>
+                <button onclick="addToCart(${product.id}, '${product.name}', ${product.price})">Ajouter au panier</button>
+                <button onclick="viewProduct(${product.id})">Voir Détails</button>
+            `;
+            productList.appendChild(productDiv);
+        });
+    }
+
+    // Fonction pour afficher les détails d'un produit
+    function viewProduct(productId) {
+        // Ici, vous pouvez rediriger vers une page de détails ou afficher une modal
+        alert(`Détails du produit ${productId} à implémenter.`);
+        // Ex: window.location.href = `/product-details.html?id=${productId}`;
+    }
 
         // Fonction pour gérer le panier
         let cart = [];
