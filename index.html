@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Serebula - Tapis de souris gaming</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.20/jspdf.plugin.autotable.min.js"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            background-color: #f0f0f0;
+            color: #333;
+        }
+        header {
+            background-color: #1a1a1a;
+            color: #e0e0e0;
+            padding: 1rem;
+            text-align: center;
+        }
+        nav {
+            background-color: #333;
+            padding: 0.5rem;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        nav a {
+            color: #e0e0e0;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            margin: 0.25rem;
+            border-radius: 4px;
+            background-color: #222;
+            transition: background-color 0.3s ease;
+        }
+        nav a:hover {
+            background-color: #444;
+        }
+        main {
+            padding: 1rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .product {
+            border: 1px solid #444;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 4px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            background-color: #fff;
+            color: #333;
+        }
+        .product:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        #cart-icon {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            background-color: #4a90e2;
+            color: #fff;
+            padding: 0.5rem 1rem;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 1000;
+        }
+        #cart {
+            position: fixed;
+            top: 0;
+            right: -300px;
+            width: 300px;
+            height: 100vh;
+            background-color: #fff;
+            border-left: 1px solid #444;
+            padding: 1rem;
+            overflow-y: auto;
+            transition: right 0.3s ease;
+            z-index: 999;
+            color: #333;
+        }
+        #cart.open {
+            right: 0;
+        }
+        #search-bar {
+            margin: 1rem 0;
+            display: flex;
+            gap: 0.5rem;
+        }
+        #search-bar input {
+            flex-grow: 1;
+            padding: 0.5rem;
+            border: 1px solid #444;
+            border-radius: 4px;
+            background-color: #fff;
+            color: #333;
+        }
+        #categories {
+            margin-bottom: 1rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        #order-form {
+            margin-top: 2rem;
+        }
+        button {
+            background-color: #4a90e2;
+            color: #fff;
+            border: none;
+            padding: 0.5rem 1rem;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            transition-duration: 0.4s;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        button:hover {
+            background-color: #357abd;
+        }
+        #product-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+        #user-info {
+            position: fixed;
+            top: 1rem;
+            right: 4rem;
+            background-color: #4a90e2;
+            color: #fff;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            z-index: 1000;
+        }
+        #login-buttons {
+            display: flex;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+        #login-buttons button {
+            margin: 0 0.5rem;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Serebula - Tapis de souris gaming</h1>
+    </header>
+    <nav>
+        <a href="#home" onclick="navigate('home')">Accueil</a>
+        <a href="#products" onclick="navigate('products')">Produits</a>
+        <a href="#order" onclick="navigate('order')">Commander</a>
+    </nav>
+    
+    <main id="content">
+        <!-- Le contenu changera en fonction de la page -->
+    </main>
+    <div id="cart-icon" onclick="toggleCart()">🛒</div>
+    <div id="cart">
+        <h2>Panier</h2>
+        <ul id="cart-items"></ul>
+        <p>Total: <span id="cart-total">0</span>€</p>
+        <button onclick="generatePDF()">Télécharger le récapitulatif PDF</button>
+    </div>
+
+    <script>
+        // Contenu de la page d'accueil
+        const homePage = `
+            <h2>Bienvenue chez Serebula</h2>
+            <p>Découvrez nos tapis de souris grand format pour une expérience de jeu optimale !</p>
+        `;
+
+        // Contenu de la page des produits
+        const productsPage = `
+            <h2>Nos Tapis de Souris Gaming</h2>
+            <div id="search-bar">
+                <input type="text" id="search-input" placeholder="Rechercher un produit">
+                <button onclick="searchProducts()">Rechercher</button>
+            </div>
+            <div id="categories">
+                <button onclick="filterProducts('all')">Tous</button>
+                <button onclick="filterProducts('XXL')">XXL</button>
+                <button onclick="filterProducts('3XL')">3XL</button>
+                <button onclick="filterProducts('4XL')">4XL</button>
+            </div>
+            <div id="product-list"></div>
+        `;
+
+        // Contenu de la page de commande
+        const orderPage = `
+            <h2>Passer une commande</h2>
+            <form id="order-form" onsubmit="submitOrder(event)">
+                <label for="name">Nom :</label>
+                <input type="text" id="name" required><br><br>
+                <label for="email">Email :</label>
+                <input type="email" id="email" required><br><br>
+                <label for="address">Adresse :</label>
+                <textarea id="address" required></textarea><br><br>
+                <button type="submit">Commander</button>
+            </form>
+        `;
+
+        // Liste des produits
+        const products = [
+            { id: 1, name: "Tapis Serebula Pro XXL", price: 29.99, category: "XXL", description: "900x400mm, surface lisse" },
+            { id: 2, name: "Tapis Serebula Elite 3XL", price: 39.99, category: "3XL", description: "1200x600mm, bords cousus" },
+            { id: 3, name: "Tapis Serebula Ultimate 4XL", price: 49.99, category: "4XL", description: "1500x800mm, base antidérapante" },
+            { id: 4, name: "Tapis Serebula RGB XXL", price: 59.99, category: "XXL", description: "900x400mm, éclairage RGB" },
+        ];
+
+        // Fonction pour afficher les produits
+        function displayProducts(productsToShow = products) {
+            const productList = document.getElementById('product-list');
+            productList.innerHTML = '';
+            productsToShow.forEach(product => {
+                const productDiv = document.createElement('div');
+                productDiv.className = 'product fade-in';
+                productDiv.innerHTML = `
+                    <h3>${product.name}</h3>
+                    <p>${product.description}</p>
+                    <p>Prix : ${product.price.toFixed(2)}€</p>
+                    <p>Taille : ${product.category}</p>
+                    <button onclick="addToCart(${product.id}, '${product.name}', ${product.price})">Ajouter au panier</button>
+                `;
+                productList.appendChild(productDiv);
+            });
+        }
+
+        // Fonction pour changer le contenu de la page
+        function navigate(page) {
+            const content = document.getElementById('content');
+            content.style.opacity = '0';
+            setTimeout(() => {
+                switch(page) {
+                    case 'home':
+                        content.innerHTML = homePage;
+                        break;
+                    case 'products':
+                        content.innerHTML = productsPage;
+                        displayProducts();
+                        break;
+                    case 'order':
+                        content.innerHTML = orderPage;
+                        break;
+                }
+                content.style.opacity = '1';
+            }, 300);
+        }
+
+        // Fonction pour gérer le panier
+        let cart = [];
+        function addToCart(id, name, price) {
+            cart.push({ id, name, price });
+            updateCart();
+        }
+
+        function updateCart() {
+            const cartItems = document.getElementById('cart-items');
+            const cartTotal = document.getElementById('cart-total');
+            cartItems.innerHTML = '';
+            let total = 0;
+            cart.forEach(item => {
+                const listItem = document.createElement('li');
+                listItem.innerText = `${item.name} - ${item.price.toFixed(2)}€`;
+                cartItems.appendChild(listItem);
+                total += item.price;
+            });
+            cartTotal.innerText = total.toFixed(2);
+        }
+
+        // Fonction pour générer un PDF
+        function generatePDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            
+            // En-tête
+            doc.setFontSize(18);
+            doc.text("Facture Serebula", 105, 20, null, null, 'center');
+            
+            doc.setFontSize(12);
+            doc.text("Serebula", 10, 30);
+            doc.text("123 Rue du Gaming", 10, 35);
+            doc.text("Téléphone : 01 23 45 67 89", 10, 40);
+            doc.text("Email : contact@serebula.com", 10, 45);
+            
+            // Tableau des produits
+            const startY = 60;
+            doc.autoTable({
+                startY: startY,
+                head: [['#', 'Produit', 'Prix (€)']],
+                body: cart.map((item, index) => [index + 1, item.name, item.price.toFixed(2)]),
+            });
+            
+            // Total
+            const finalY = doc.lastAutoTable.finalY || startY;
+            doc.text(`Total: ${cart.reduce((sum, item) => sum + item.price, 0).toFixed(2)}€`, 14, finalY + 15);
+            
+            // Sauvegarde du PDF
+            doc.save("facture_serebula.pdf");
+        }
+
+        // Fonction pour rechercher des produits
+        function searchProducts() {
+            const searchInput = document.getElementById('search-input').value.toLowerCase();
+            const filteredProducts = products.filter(product => 
+                product.name.toLowerCase().includes(searchInput) || 
+                product.description.toLowerCase().includes(searchInput)
+            );
+            displayProducts(filteredProducts);
+        }
+
+        // Fonction pour filtrer par catégorie
+        function filterProducts(category) {
+            if (category === 'all') {
+                displayProducts(products);
+            } else {
+                const filteredProducts = products.filter(product => product.category === category);
+                displayProducts(filteredProducts);
+            }
+        }
+
+        // Fonction pour afficher/masquer le panier
+        function toggleCart() {
+            const cartElement = document.getElementById('cart');
+            cartElement.classList.toggle('open');
+        }
+
+        // Fonction pour soumettre la commande
+        function submitOrder(event) {
+            event.preventDefault();
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const address = document.getElementById('address').value;
+            
+            alert(`Commande passée avec succès!\nNom: ${name}\nEmail: ${email}\nAdresse: ${address}`);
+            // Ici, vous pouvez ajouter le code pour envoyer la commande à un serveur
+        }
+
+        // Initialisation
+        navigate('home');
+    </script>
+</body>
+</html>
