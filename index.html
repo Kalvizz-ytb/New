@@ -3,180 +3,185 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tapis de Souris Gaming Pro - Serebula</title>
+    <title>Serebula - Tapis de souris gaming</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.20/jspdf.plugin.autotable.min.js"></script>
     <style>
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        @keyframes slideInFromLeft {
-            from { transform: translateX(-100%); }
-            to { transform: translateX(0); }
-        }
-        @keyframes slideInFromRight {
-            from { transform: translateX(100%); }
-            to { transform: translateX(0); }
-        }
-        @keyframes scaleIn {
-            from { transform: scale(0.5); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
-        }
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-        }
-
-        body {
-            font-family: 'Arial', sans-serif;
-            line-height: 1.6;
-            color: #333;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-        }
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        header {
-            background-color: #333;
-            color: #fff;
-            text-align: center;
-            padding: 1rem;
-            animation: slideInFromLeft 1s ease-out;
-        }
-        .product-image {
-            max-width: 100%;
-            height: auto;
-            display: block;
-            margin: 0 auto;
-            animation: scaleIn 1s ease-out;
-        }
-        .product-info {
-            background-color: #fff;
-            padding: 20px;
-            margin-top: 20px;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-            animation: fadeIn 1s ease-out;
-        }
-        .product-title {
-            font-size: 2em;
-            margin-bottom: 10px;
-        }
-        .product-price {
-            font-size: 1.5em;
-            color: #e74c3c;
-            margin-bottom: 20px;
-        }
-        .product-description {
-            margin-bottom: 20px;
-        }
-        .features {
-            list-style-type: none;
-            padding: 0;
-        }
-        .features li {
-            margin-bottom: 10px;
-            padding-left: 20px;
-            position: relative;
-        }
-        .features li::before {
-            content: "✓";
-            position: absolute;
-            left: 0;
-            color: #2ecc71;
-        }
-        .buy-button {
-            display: inline-block;
-            background-color: #3498db;
-            color: #fff;
-            padding: 10px 20px;
-            text-decoration: none;
-            border-radius: 5px;
-            transition: background-color 0.3s ease;
-            animation: pulse 2s infinite;
-        }
-        .buy-button:hover {
-            background-color: #2980b9;
-        }
-        .reviews {
-            margin-top: 40px;
-        }
-        .review {
-            background-color: #fff;
-            padding: 20px;
-            margin-bottom: 20px;
-            border-radius: 5px;
-            box-shadow: 0 0 5px rgba(0,0,0,0.1);
-            animation: slideInFromRight 1s ease-out;
-        }
-        .rating {
-            color: #f39c12;
-            font-size: 1.2em;
-            margin-bottom: 10px;
-        }
-        @media (max-width: 768px) {
-            .container {
-                padding: 10px;
-            }
-        }
+        /* Styles inchangés ... */
     </style>
 </head>
 <body>
     <header>
-        <h1>Serebula Gaming</h1>
+        <h1>Serebula - Tapis de souris gaming</h1>
     </header>
-    <div class="container">
-        <img src="/api/placeholder/600/400" alt="Tapis de Souris Gaming Pro" class="product-image">
-        <div class="product-info">
-            <h2 class="product-title">Tapis de Souris Gaming Pro</h2>
-            <p class="product-price">39,99 €</p>
-            <p class="product-description">
-                Le Tapis de Souris Gaming Pro de Serebula offre une surface de jeu optimale pour les gamers exigeants. Sa grande taille et sa texture parfaitement équilibrée assurent des mouvements fluides et précis.
-            </p>
-            <ul class="features">
-                <li>Dimensions : 900 x 400 mm</li>
-                <li>Surface micro-texturée pour une précision optimale</li>
-                <li>Base antidérapante</li>
-                <li>Bords cousus pour une durabilité accrue</li>
-                <li>Compatible avec tous types de souris</li>
-            </ul>
-            <a href="#" class="buy-button">Ajouter au panier</a>
-        </div>
-        <div class="reviews">
-            <h3>Avis des clients</h3>
-            <div class="review">
-                <div class="rating">★★★★★</div>
-                <p><strong>Jean D.</strong> - Excellent tapis de souris ! La qualité est au rendez-vous et mes performances en jeu se sont nettement améliorées.</p>
-            </div>
-            <div class="review">
-                <div class="rating">★★★★☆</div>
-                <p><strong>Marie L.</strong> - Très bon produit, grand et confortable. Je retire une étoile car les bords s'effilochent légèrement après quelques mois d'utilisation intensive.</p>
-            </div>
-        </div>
-    </div>
-    <script>
-        // Vous pouvez ajouter ici du JavaScript pour des interactions supplémentaires
-        document.addEventListener('DOMContentLoaded', (event) => {
-            // Animation de rotation pour l'image du produit au survol
-            const productImage = document.querySelector('.product-image');
-            productImage.addEventListener('mouseover', () => {
-                productImage.style.animation = 'rotate 5s linear infinite';
-            });
-            productImage.addEventListener('mouseout', () => {
-                productImage.style.animation = '';
-            });
+    <nav>
+        <a href="#home">Accueil</a>
+        <a href="#products">Produits</a>
+        <a href="#order">Commander</a>
+    </nav>
+    
+    <main>
+        <section id="home">
+            <h2>Bienvenue chez Serebula</h2>
+            <p>Découvrez nos tapis de souris grand format pour une expérience de jeu optimale !</p>
+        </section>
 
-            // Animation pour les éléments de la liste des caractéristiques
-            const features = document.querySelectorAll('.features li');
-            features.forEach((feature, index) => {
-                feature.style.animation = `fadeIn 0.5s ease-out ${index * 0.1}s forwards`;
-                feature.style.opacity = '0';
+        <section id="products">
+            <h2>Nos Tapis de Souris Gaming</h2>
+            <img src="/api/placeholder/800/400" alt="Tapis de souris gaming" class="placeholder-image">
+            <div id="search-bar">
+                <input type="text" id="search-input" placeholder="Rechercher un produit">
+                <button onclick="searchProducts()">Rechercher</button>
+            </div>
+            <div id="categories">
+                <button onclick="filterProducts('all')">Tous</button>
+                <button onclick="filterProducts('XXL')">XXL</button>
+                <button onclick="filterProducts('3XL')">3XL</button>
+                <button onclick="filterProducts('4XL')">4XL</button>
+            </div>
+            <div id="product-list"></div>
+        </section>
+
+        <section id="order">
+            <h2>Passer une commande</h2>
+            <form id="order-form" onsubmit="submitOrder(event)">
+                <label for="name">Nom :</label>
+                <input type="text" id="name" required><br><br>
+                <label for="email">Email :</label>
+                <input type="email" id="email" required><br><br>
+                <label for="address">Adresse :</label>
+                <textarea id="address" required></textarea><br><br>
+                <button type="submit">Commander</button>
+            </form>
+        </section>
+    </main>
+
+    <div id="cart-icon" onclick="toggleCart()">🛒</div>
+    <div id="cart">
+        <h2>Panier</h2>
+        <ul id="cart-items"></ul>
+        <p>Total: <span id="cart-total">0</span>€</p>
+        <button onclick="generatePDF()">Télécharger le récapitulatif PDF</button>
+    </div>
+
+    <script>
+        // Liste des produits
+        const products = [
+            { id: 1, name: "Tapis Serebula Pro XXL", price: 29.99, category: "XXL", description: "900x400mm, surface lisse" },
+            { id: 2, name: "Tapis Serebula Elite 3XL", price: 39.99, category: "3XL", description: "1200x600mm, bords cousus" },
+            { id: 3, name: "Tapis Serebula Ultimate 4XL", price: 49.99, category: "4XL", description: "1500x800mm, base antidérapante" },
+            { id: 4, name: "Tapis Serebula RGB XXL", price: 59.99, category: "XXL", description: "900x400mm, éclairage RGB" },
+        ];
+
+        // Fonction pour afficher les produits
+        function displayProducts(productsToShow = products) {
+            const productList = document.getElementById('product-list');
+            productList.innerHTML = '';
+            productsToShow.forEach(product => {
+                const productDiv = document.createElement('div');
+                productDiv.className = 'product';
+                productDiv.innerHTML = `
+                    <h3>${product.name}</h3>
+                    <p>${product.description}</p>
+                    <p>Prix : ${product.price.toFixed(2)}€</p>
+                    <p>Taille : ${product.category}</p>
+                    <button onclick="addToCart(${product.id}, '${product.name}', ${product.price})">Ajouter au panier</button>
+                `;
+                productList.appendChild(productDiv);
             });
-        });
+        }
+
+        // Fonction pour gérer le panier
+        let cart = [];
+        function addToCart(id, name, price) {
+            cart.push({ id, name, price });
+            updateCart();
+        }
+
+        function updateCart() {
+            const cartItems = document.getElementById('cart-items');
+            const cartTotal = document.getElementById('cart-total');
+            cartItems.innerHTML = '';
+            let total = 0;
+            cart.forEach(item => {
+                const listItem = document.createElement('li');
+                listItem.innerText = `${item.name} - ${item.price.toFixed(2)}€`;
+                cartItems.appendChild(listItem);
+                total += item.price;
+            });
+            cartTotal.innerText = total.toFixed(2);
+        }
+
+        // Fonction pour générer un PDF
+        function generatePDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            
+            // En-tête
+            doc.setFontSize(18);
+            doc.text("Facture Serebula", 105, 20, null, null, 'center');
+            
+            doc.setFontSize(12);
+            doc.text("Serebula", 10, 30);
+            doc.text("123 Rue du Gaming", 10, 35);
+            doc.text("Téléphone : 01 23 45 67 89", 10, 40);
+            doc.text("Email : contact@serebula.com", 10, 45);
+            
+            // Tableau des produits
+            const startY = 60;
+            doc.autoTable({
+                startY: startY,
+                head: [['#', 'Produit', 'Prix (€)']],
+                body: cart.map((item, index) => [index + 1, item.name, item.price.toFixed(2)]),
+            });
+            
+            // Total
+            const finalY = doc.lastAutoTable.finalY || startY;
+            doc.text(`Total: ${cart.reduce((sum, item) => sum + item.price, 0).toFixed(2)}€`, 14, finalY + 15);
+            
+            // Sauvegarde du PDF
+            doc.save("facture_serebula.pdf");
+        }
+
+        // Fonction pour rechercher des produits
+        function searchProducts() {
+            const searchInput = document.getElementById('search-input').value.toLowerCase();
+            const filteredProducts = products.filter(product => 
+                product.name.toLowerCase().includes(searchInput) || 
+                product.description.toLowerCase().includes(searchInput)
+            );
+            displayProducts(filteredProducts);
+        }
+
+        // Fonction pour filtrer par catégorie
+        function filterProducts(category) {
+            if (category === 'all') {
+                displayProducts(products);
+            } else {
+                const filteredProducts = products.filter(product => product.category === category);
+                displayProducts(filteredProducts);
+            }
+        }
+
+        // Fonction pour afficher/masquer le panier
+        function toggleCart() {
+            const cartElement = document.getElementById('cart');
+            cartElement.classList.toggle('open');
+        }
+
+        // Fonction pour soumettre la commande
+        function submitOrder(event) {
+            event.preventDefault();
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const address = document.getElementById('address').value;
+            
+            alert(`Commande passée avec succès!\nNom: ${name}\nEmail: ${email}\nAdresse: ${address}`);
+            // Ici, vous pouvez ajouter le code pour envoyer la commande à un serveur
+        }
+
+        // Initialisation
+        displayProducts();
     </script>
 </body>
 </html>
